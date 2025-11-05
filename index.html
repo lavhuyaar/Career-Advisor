@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="card welcome-screen">
+            <h1>🎓 Career Advisor Platform</h1>
+            <p>Find Your Perfect Career Path in 5 Minutes</p>
+            <p class="subtitle">
+                Take a quick 10-question survey to discover careers that match your interests, 
+                skills, and personality. Get personalized recommendations with college suggestions!
+            </p>
+            <button class="btn-primary start-btn">Start Survey →</button>
+        </div>
+
+        <!-- Survey Screen -->
+        <div id="surveyScreen" class="card hidden">
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Progress</span>
+                    <span id="progressText">Question 1/10</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <div id="questionContainer" class="question-container"></div>
+
+            <div class="buttons">
+                <button id="prevBtn" class="btn-secondary hidden">← Previous</button>
+                <button id="nextBtn" class="btn-primary">Next →</button>
+                <button id="submitBtn" class="btn-primary hidden">Submit & Get Results 🎉</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="card hidden">
+            <div class="results-header">
+                <h1>🎉 Your Career Matches!</h1>
+                <p class="subtitle">Based on your answers, here are your top 3 career recommendations</p>
+            </div>
+
+            <div id="careerResults"></div>
+
+            <div class="colleges-section">
+                <h2>📚 Recommended Government Colleges</h2>
+                <div id="collegesList"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="retakeBtn" class="btn-secondary">↺ Retake Survey</button>
+                <button id="downloadBtn" class="btn-primary">📥 Download Report</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="scripts/app.js"></script>
+</html>

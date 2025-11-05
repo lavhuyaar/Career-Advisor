@@ -1,0 +1,27 @@
+ @media (max-width: 768px) {
+            .card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .question-text {
+                font-size: 1.2rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .career-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
