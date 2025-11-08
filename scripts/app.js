@@ -1,4 +1,4 @@
-import { questions, colleges, careers } from "./data.js";
+import { questions, colleges, careers, askAI, opts } from "./data.js";
 
 // Dom selection
 const startBtn = document.querySelector(".start-btn");
@@ -8,15 +8,20 @@ const submitBtn = document.querySelector("#submitBtn");
 const retakeBtn = document.querySelector("#retakeBtn");
 const downloadBtn = document.querySelector("#downloadBtn");
 
+let currIdx = 0;
+
 // Event Listner
 startBtn.addEventListener("click", () => {
   startSurvey();
+  askAI(currIdx);
+  currIdx++;
 });
 prevBtn.addEventListener("click", () => {
   previousQuestion();
 });
 nextBtn.addEventListener("click", () => {
   nextQuestion();
+  askAI()
 });
 submitBtn.addEventListener("click", () => {
   submitSurvey();
