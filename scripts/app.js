@@ -8,44 +8,30 @@ const submitBtn = document.querySelector("#submitBtn");
 const retakeBtn = document.querySelector("#retakeBtn");
 const downloadBtn = document.querySelector("#downloadBtn");
 
-let currIdx = 0;
 // Event Listner
-startBtn.addEventListener("click", async() => {
-  // await askAI(currIdx);
-  // currIdx++;
-  // console.log(currIdx);
-  startSurvey();
-});
-prevBtn.addEventListener("click", () => {
-  previousQuestion();
-});
-nextBtn.addEventListener("click", () => {
-  nextQuestion(currIdx);
-});
-submitBtn.addEventListener("click", () => {
-  submitSurvey();
-});
-retakeBtn.addEventListener("click", () => {
-  retakeSurvey();
-});
-downloadBtn.addEventListener("click", () => {
-  downloadReport();
-});
+startBtn.addEventListener("click", startSurvey);
+prevBtn.addEventListener("click", previousQuestion);
+nextBtn.addEventListener("click", nextQuestion);
+submitBtn.addEventListener("click", submitSurvey);
+retakeBtn.addEventListener("click", retakeSurvey);
+downloadBtn.addEventListener("click", downloadReport);
 
 // State
 let currentQuestion = 0;
 let answers = {};
 
 // Functions
-function startSurvey() {
+async function startSurvey() {
   document.getElementById("welcomeScreen").classList.add("hidden");
-  console.log("working")
-  if(questions[currIdx].text !== "" && questions[currIdx].options.length != 0){
-  document.getElementById("surveyScreen").classList.remove("hidden");
-   displayQuestion();
-   console.log("wededew")
-  }else{
-    askAI(currIdx);
+  if (
+    questions[currentQuestion].text !== "" &&
+    questions[currentQuestion].options.length != 0
+  ) {
+    document.getElementById("surveyScreen").classList.remove("hidden");
+    displayQuestion();
+  } else {
+    await askAI(currentQuestion);
+    document.getElementById("surveyScreen").classList.remove("hidden");
     displayQuestion();
   }
 }
@@ -56,8 +42,8 @@ function displayQuestion() {
   container.innerHTML = "";
 
   let html = `<div class="question-text">${question.text}</div><div class="options">`;
-  console.log(question)
-  
+  console.log(question);
+
   question.options.forEach((option, index) => {
     const checked = answers[question.id] === option ? "checked" : "";
     const selected = answers[question.id] === option ? "selected" : "";
@@ -112,26 +98,23 @@ function updateButtons() {
   );
 }
 
-function nextQuestion(ci) {
-  if (!answers[questions[currentQuestion].id]) {
-    alert("Please select an answer before proceeding!");
-    console.log("why");
-    return;
-  }
-
+async function nextQuestion() {
   if (currentQuestion < questions.length - 1) {
     currentQuestion++;
-    displayQuestion();
-    console.log("what");
   }
-  askAI(ci)
-  ci++;
-  console.log(ci);
+
+  if (questions[currentQuestion].options.length == 0) {
+    await askAI(currentQuestion);
+  }
+  displayQuestion();
 }
 
-function previousQuestion() {
+async function previousQuestion() {
   if (currentQuestion > 0) {
     currentQuestion--;
+    if (questions[currentQuestion].options.length == 0) {
+      await askAI(currentQuestion);
+    }
     displayQuestion();
   }
 }

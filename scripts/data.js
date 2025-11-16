@@ -149,25 +149,28 @@ export const colleges = {
   ],
 };
 
+const prevBtn = document.querySelector("#prevBtn");
+const nextBtn = document.querySelector("#nextBtn");
+const submitBtn = document.querySelector("#submitBtn");
+
 export async function askAI(currIdx) {
   const question = `You are a question generator. We already have these questions with answers: ${questions
     .filter((q) => q.text !== "")
     .map((q) => `Q${q.id}: ${q.text}`)
     .join("\n")}
-Now, ask the next logical question for index ${
-    currIdx + 1
-  }. and most important thing do not type extra rubbish just type a single sentence question, and that question must be related to user's liking, means questions know about user's passion and intrest in future. dont just go and ask irrelevant question start with basic questions and as ${currIdx + 1} make them related to their career and passion`;
-  
-  const resBox = document.createElement("div");
+    Now, ask the next logical question for index ${currIdx}. and most important thing do not type extra rubbish just type a single sentence question, and that question must be related to user's liking, means questions know about user's passion and intrest in future. dont just go and ask irrelevant question start with basic questions and as ${currIdx} make them related to their career and passion`;
+
   const container = document.getElementById("questionContainer");
+  container.innerHTML = "";
+  const resBox = document.createElement("div");
   resBox.classList.add("loader");
-
   resBox.textContent = "Thinking...";
-
   container.append(resBox);
-
   document.getElementById("surveyScreen").classList.remove("hidden");
 
+  prevBtn.disabled = true;
+  nextBtn.disabled = true;
+  submitBtn.disabled = true;
   try {
     const response = await fetch("http://localhost:3000/ask", {
       method: "POST",
@@ -178,19 +181,26 @@ Now, ask the next logical question for index ${
     const data = await response.json();
     const aiQues = data.response || data.output || JSON.stringify(data);
 
-    questions[currIdx].text += aiQues;
+    questions[currIdx].text = aiQues;
     console.log(questions[currIdx], aiQues, currIdx);
 
     await opts(currIdx);
     currIdx++;
   } catch (err) {
     console.error(err);
-    questions[currIdx].text += "Failed to connect to server.";
+    questions[currIdx].text = "Failed to connect to server.";
+  } finally {
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+    submitBtn.disabled = false;
   }
 }
 export async function opts(currIdx) {
   const prompt = `Now, based on this question: "${questions[currIdx].text}", generate 4 multiple-choice options that make sense for this question. just give me option in a single word or sentence, do not type any rubbish other than main options`;
 
+  prevBtn.disabled = true;
+  nextBtn.disabled = true;
+  submitBtn.disabled = true;
   try {
     const response = await fetch("http://localhost:3000/ask", {
       method: "POST",
@@ -210,5 +220,9 @@ export async function opts(currIdx) {
     console.error(err);
     resBox = "Failed to connect to server.";
     return [];
+  } finally {
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+    submitBtn.disabled = false;
   }
 }
